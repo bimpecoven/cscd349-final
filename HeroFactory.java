@@ -6,21 +6,49 @@
 public class HeroFactory {
     public Hero createCharacter(int type) {
         Hero hero;
+        String name;
+        int hitPoints, attackSpeed, damageMin, damageMax;
+        double chanceToHit, chanceToBlock;
 
         switch(type) {
-            case 1:     hero = new Hero("Warrior", 125, 4, .8, 35, 60, .2);
+            case 1:     name = "Warrior";
+                        hitPoints = 125;
+                        attackSpeed = 4;
+                        chanceToHit = .8;
+                        damageMin = 35;
+                        damageMax = 60;
+                        chanceToBlock = .2;
                         break;
 
-            case 2:     hero = new Hero("Sorceress", 75, 5, .7, 25, 50, .3);
+            case 2:     name = "Sorceress";
+                        hitPoints = 75;
+                        attackSpeed = 5;
+                        chanceToHit = .7;
+                        damageMin = 25;
+                        damageMax = 50;
+                        chanceToBlock = .3;
                         break;
 
-            case 3:     hero = new Hero("Thief", 75, 6, .8, 20, 40, .5);
+            case 3:     name = "Theif";
+                        hitPoints = 75;
+                        attackSpeed = 6;
+                        chanceToHit = .8;
+                        damageMin = 20;
+                        damageMax = 40;
+                        chanceToBlock = .5;
                         break;
 
-            default:    hero = new Hero("Thief", 75, 6, .8, 20, 40, .5);
+            default:    name = "Theif";
+                        hitPoints = 75;
+                        attackSpeed = 6;
+                        chanceToHit = .8;
+                        damageMin = 20;
+                        damageMax = 40;
+                        chanceToBlock = .5;
                         break;
         }//end switch
 
+        hero = new Hero(name, hitPoints, attackSpeed, chanceToHit, damageMin, damageMax, chanceToBlock);
         hero.setAbility(setAbility(type));
 
         return hero;
