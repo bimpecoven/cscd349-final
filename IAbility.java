@@ -4,7 +4,7 @@
 **/
 
 public interface IAbility {
-    public void performAbility(DungeonCharacter opponent, DungeonCharacter hero);
-    public void attack(DungeonCharacter opponent, DungeonCharacter hero);
-    public int prompt();
+    void performAbility(DungeonCharacter opponent, DungeonCharacter hero);
+    void attack(DungeonCharacter opponent, DungeonCharacter hero);
+    int prompt();
 }
