@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Title: Dungeon.java
  *
@@ -74,9 +76,11 @@ this task
 		System.out.println("Choose a hero:\n" +
 					       "1. Warrior\n" +
 						   "2. Sorceress\n" +
-						   "3. Thief");
+						   "3. Thief\n" +
+                           "4. Dwarf\n" +
+                           "5. Cleric");
 		choice = Keyboard.readInt();
-        while(choice < 1 || choice > 3) {
+        while(choice < 1 || choice > 5) {
             System.out.println("Invalid choice. Enter a valid number.");
             choice = Keyboard.readInt();
         }
@@ -93,7 +97,10 @@ a polymorphic reference (Monster) to accomplish this task.
 	{
 		int choice;
 
-		choice = (int)(Math.random() * 3) + 1;
+        Random randMonster = new Random();
+        choice = randMonster.nextInt(5) + 1;
+
+//		choice = (int)(Math.random() * 5) + 1; //this was set to 3 instead of 5. figured it has to do with number of options
         MonsterFactory factory = new MonsterFactory();
         return factory.createCharacter(choice);
 
