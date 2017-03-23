@@ -42,7 +42,7 @@ public class Hero extends DungeonCharacter
   {
 	super(name, hitPoints, attackSpeed, chanceToHit, damageMin, damageMax);
 	this.chanceToBlock = chanceToBlock;
-	readName();
+
   }
 
 /*-------------------------------------------------------

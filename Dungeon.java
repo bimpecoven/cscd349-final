@@ -91,6 +91,7 @@ this task
 
         Hero hero = heroFactory.createCharacter(choice);
         hero.setAbility(heroAttackFactory.getAbility(hero.getName()));
+        hero.readName();
         return hero;
 
 	}//end chooseHero method
