@@ -49,14 +49,18 @@ public class Dungeon
 {
     public static void main(String[] args)
 	{
+        HeroFactory heroFactory = new HeroFactory();
+        MonsterFactory monsterFactory = new MonsterFactory();
+        HeroAttackFactory heroAttackFactory = new HeroAttackFactory();
+        MonsterAttackFactory monsterAttackFactory = new MonsterAttackFactory();
 
 		Hero theHero;
 		Monster theMonster;
 
 		do
 		{
-		    theHero = chooseHero();
-		    theMonster = generateMonster();
+		    theHero = chooseHero(heroFactory, heroAttackFactory);
+		    theMonster = generateMonster(monsterFactory, monsterAttackFactory);
 			battle(theHero, theMonster);
 
 		} while (playAgain());
@@ -68,7 +72,7 @@ chooseHero allows the user to select a hero, creates that hero, and
 returns it.  It utilizes a polymorphic reference (Hero) to accomplish
 this task
 ---------------------------------------------------------------------*/
-	public static Hero chooseHero()
+	public static Hero chooseHero(HeroFactory heroFactory, HeroAttackFactory heroAttackFactory)
 	{
 		int choice = -1;
 		Hero theHero;
@@ -84,8 +88,10 @@ this task
             System.out.println("Invalid choice. Enter a valid number.");
             choice = Keyboard.readInt();
         }
-        HeroFactory factory = new HeroFactory();
-        return factory.createCharacter(choice);
+
+        Hero hero = heroFactory.createCharacter(choice);
+        hero.setAbility(heroAttackFactory.getAbility(hero.getName()));
+        return hero;
 
 	}//end chooseHero method
 
@@ -93,7 +99,7 @@ this task
 generateMonster randomly selects a Monster and returns it.  It utilizes
 a polymorphic reference (Monster) to accomplish this task.
 ---------------------------------------------------------------------*/
-	public static Monster generateMonster()
+	public static Monster generateMonster(MonsterFactory monsterFactory, MonsterAttackFactory monsterAttackFactory)
 	{
 		int choice;
 
@@ -101,8 +107,9 @@ a polymorphic reference (Monster) to accomplish this task.
         choice = randMonster.nextInt(5) + 1;
 
 //		choice = (int)(Math.random() * 5) + 1; //this was set to 3 instead of 5. figured it has to do with number of options
-        MonsterFactory factory = new MonsterFactory();
-        return factory.createCharacter(choice);
+        Monster monster = monsterFactory.createCharacter(choice);
+        monster.setAttack(monsterAttackFactory.getAttack(monster.getName()));
+        return monster;
 
 	}//end generateMonster method
 

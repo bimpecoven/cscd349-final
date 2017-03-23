@@ -79,20 +79,20 @@ public class MonsterFactory {
         }//end switch
 
         monster = new Monster(name, hitPoints, attackSpeed, chanceToHit, chanceToHeal, damageMin, damageMax, minHeal, maxHeal);
-        monster.setAttack(setAbility(type));
+        monster.setAttack(setAbility(monster.name));
         return monster;
     }
-    public IAttack setAbility(int type) {
+    public IAttack setAbility(String type) {
         switch(type) {
-            case 1:     return new OgreAttack();
+            case "Oscar the Ogre":          return new OgreAttack();
 
-            case 2:     return new GremlinAttack();
+            case "Gnarltooth the Gremlin":  return new GremlinAttack();
 
-            case 3:     return new SkeletonAttack();
+            case "Sargath the Skeleton":    return new SkeletonAttack();
 
-            case 4:     return new OrcAttack();
+            case "Oswald the Orc":          return new OrcAttack();
 
-            case 5:     return new DarkLordAttack();
+            case "Darius the Dark Lord":    return new DarkLordAttack();
 
             default:    return new SkeletonAttack();
         }//end switch

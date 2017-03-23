@@ -18,6 +18,7 @@ public class HeroFactory {
                         damageMin = 35;
                         damageMax = 60;
                         chanceToBlock = .2;
+
                         break;
 
             case 2:     name = "Sorceress";
@@ -67,23 +68,24 @@ public class HeroFactory {
         }//end switch
 
         hero = new Hero(name, hitPoints, attackSpeed, chanceToHit, damageMin, damageMax, chanceToBlock);
-        hero.setAbility(setAbility(type));
+        hero.setAbility(setAbility(hero.name));
 
         return hero;
     }//end createCharacter
-    public IAbility setAbility(int type) {
+
+    public IAbility setAbility(String type) {
         switch(type) {
-            case 1:     return new WarriorAbility();
+            case "Warrior":     return new WarriorAbility();
 
-            case 2:     return new SorceressAbility();
+            case "Sorceress":   return new SorceressAbility();
 
-            case 3:     return new ThiefAbility();
+            case "Thief":       return new ThiefAbility();
 
-            case 4:     return new DwarfAbility();
+            case "Dwarf":       return new DwarfAbility();
 
-            case 5:     return new ClericAbility();
+            case "Cleric":      return new ClericAbility();
 
-            default:    return new ThiefAbility();
+            default:            return new ThiefAbility();
         }//end switch
     }//end setAbility
 }
