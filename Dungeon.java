@@ -54,14 +54,14 @@ public class Dungeon
         HeroAttackFactory heroAttackFactory = new HeroAttackFactory();
         MonsterAttackFactory monsterAttackFactory = new MonsterAttackFactory();
 
-		Hero theHero;
-		Monster theMonster;
+		Hero[] theHeros;
+		Monster[] theMonsters;
 
 		do
 		{
-		    theHero = chooseHero(heroFactory, heroAttackFactory);
-		    theMonster = generateMonster(monsterFactory, monsterAttackFactory);
-			battle(theHero, theMonster);
+		    theHeros = chooseHeros(heroFactory, heroAttackFactory);
+		    theMonsters = generateMonsters(monsterFactory, monsterAttackFactory, theHeros.length);
+			battle(theHeros, theMonsters);
 
 		} while (playAgain());
 
@@ -72,46 +72,61 @@ chooseHero allows the user to select a hero, creates that hero, and
 returns it.  It utilizes a polymorphic reference (Hero) to accomplish
 this task
 ---------------------------------------------------------------------*/
-	public static Hero chooseHero(HeroFactory heroFactory, HeroAttackFactory heroAttackFactory)
+	public static Hero[] chooseHeros(HeroFactory heroFactory, HeroAttackFactory heroAttackFactory)
 	{
-		int choice = -1;
-		Hero theHero;
+        System.out.println("How many Heroes would you like? (3 - 9)");
+        int heroCount = Keyboard.readInt();
+        while(heroCount < 3 || heroCount > 9) {
+            System.out.println("Invalid number of heroes. Choose a number between 3 and 9.");
+            heroCount = Keyboard.readInt();
+        }//end while
 
-		System.out.println("Choose a hero:\n" +
-					       "1. Warrior\n" +
-						   "2. Sorceress\n" +
-						   "3. Thief\n" +
-                           "4. Dwarf\n" +
-                           "5. Cleric");
-		choice = Keyboard.readInt();
-        while(choice < 1 || choice > 5) {
-            System.out.println("Invalid choice. Enter a valid number.");
+        Hero[] heroes = new Hero[heroCount];
+
+        for(int x = 0; x < heroCount; x++) {
+
+            int choice = -1;
+            Hero hero;
+
+            System.out.println("Choose a hero:\n" +
+                    "1. Warrior\n" +
+                    "2. Sorceress\n" +
+                    "3. Thief\n" +
+                    "4. Dwarf\n" +
+                    "5. Cleric");
             choice = Keyboard.readInt();
-        }
+            while (choice < 1 || choice > 5) {
+                System.out.println("Invalid choice. Enter a valid number.");
+                choice = Keyboard.readInt();
+            }
 
-        Hero hero = heroFactory.createCharacter(choice);
-        hero.setAbility(heroAttackFactory.getAbility(hero.getName()));
-        hero.readName();
-        return hero;
-
+            hero = heroFactory.createCharacter(choice);
+            hero.setAbility(heroAttackFactory.getAbility(hero.getName()));
+            hero.readName();
+            heroes[x] = hero;
+        }//end for
+        return heroes;
 	}//end chooseHero method
 
 /*-------------------------------------------------------------------
 generateMonster randomly selects a Monster and returns it.  It utilizes
 a polymorphic reference (Monster) to accomplish this task.
 ---------------------------------------------------------------------*/
-	public static Monster generateMonster(MonsterFactory monsterFactory, MonsterAttackFactory monsterAttackFactory)
+	public static Monster[] generateMonsters(MonsterFactory monsterFactory, MonsterAttackFactory monsterAttackFactory, int count)
 	{
-		int choice;
-
+        Monster[]monsters = new Monster[count];
         Random randMonster = new Random();
-        choice = randMonster.nextInt(5) + 1;
 
-//		choice = (int)(Math.random() * 5) + 1; //this was set to 3 instead of 5. figured it has to do with number of options
-        Monster monster = monsterFactory.createCharacter(choice);
-        monster.setAttack(monsterAttackFactory.getAttack(monster.getName()));
-        return monster;
+        for(int x = 0; x < count; x++) {
 
+            int choice;
+
+            choice = randMonster.nextInt(5) + 1;
+            Monster monster = monsterFactory.createCharacter(choice);
+            monster.setAttack(monsterAttackFactory.getAttack(monster.getName()));
+            monsters[x] = monster;
+        }//end for
+        return monsters;
 	}//end generateMonster method
 
 /*-------------------------------------------------------------------
@@ -135,22 +150,39 @@ and a Monster to be passed in.  Battle occurs in rounds.  The Hero
 goes first, then the Monster.  At the conclusion of each round, the
 user has the option of quitting.
 ---------------------------------------------------------------------*/
-	public static void battle(Hero theHero, Monster theMonster)
+	public static void battle(Hero[] theHeros, Monster[] theMonsters)
 	{
 		char pause = 'p';
-		System.out.println(theHero.getName() + " battles " +
-							theMonster.getName());
-		System.out.println("---------------------------------------------");
+		System.out.println("The Heroes battle the Monsters!");
 
 		//do battle
-		while (theHero.isAlive() && theMonster.isAlive() && pause != 'q')
+		while (isTeamAlive(theHeros) && isTeamAlive(theMonsters) && pause != 'q')
 		{
-		    //hero goes first
-			theHero.battleChoices(theMonster);
+            for(int rounds = 0; rounds < theHeros.length; rounds++) {
+                int target = rounds;
 
-			//monster's turn (provided it's still alive!)
-			if (theMonster.isAlive())
-			    theMonster.attack(theHero);
+                // Heroes attack first.
+                if(theHeros[rounds].isAlive()) {
+                    while(!theMonsters[target].isAlive()) {
+                        target++;
+                        target = target % theMonsters.length;
+                    }//end while
+                    System.out.println("---------------------------------------------");
+                    System.out.println(theHeros[rounds].name + " battles " + theMonsters[target].name);
+                    System.out.println("---------------------------------------------");
+                    theHeros[rounds].battleChoices(theMonsters[target]);
+                }//end if
+
+                // Monsters turn if it's alive.
+                if(theMonsters[rounds].isAlive() && isTeamAlive(theMonsters)) {
+                    target = rounds;
+                    while(!theHeros[target].isAlive()) {
+                        target++;
+                        target = target % theHeros.length;
+                    }//end while
+                    theMonsters[rounds].attack(theHeros[target]);
+                }//end if
+            }//end for
 
 			//let the player bail out if desired
 			System.out.print("\n-->q to quit, anything else to continue: ");
@@ -158,14 +190,37 @@ user has the option of quitting.
 
 		}//end battle loop
 
-		if (!theMonster.isAlive())
-		    System.out.println(theHero.getName() + " was victorious!");
-		else if (!theHero.isAlive())
-			System.out.println(theHero.getName() + " was defeated :-(");
+		if (!isTeamAlive(theMonsters))
+		    System.out.println(" The Heroes were victorious!");
+		else if (!isTeamAlive(theHeros))
+			System.out.println("The Heroes were defeated :-(");
 		else//both are alive so user quit the game
 			System.out.println("Quitters never win ;-)");
 
 	}//end battle method
 
+    /*
+     *  This method checks a passed in array of dungeon characters.
+     *  It then traverses the array and looks to see if any characters on the team are alive.
+    **/
+    public static boolean isTeamAlive(DungeonCharacter[] passedIn) {
+        for(int x = 0; x < passedIn.length; x++) {
+            if(passedIn[x].isAlive()) {
+                return true;
+            }//end if
+        }//end for
+
+        return false;
+    }//end isTeamAlive
+
+    public static int aliveCount(DungeonCharacter[] passedIn) {
+        int count = 0;
+        for(int x = 0; x < passedIn.length; x++) {
+            if(passedIn[x].isAlive()) {
+                count++;
+            }//end if
+        }//end for
+        return count;
+    }//end
 
 }//end Dungeon class
