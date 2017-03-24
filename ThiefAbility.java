@@ -1,6 +1,9 @@
+/**
+ * CSCD349 - Final Project
+ * Project by: Blake Impecoven and Kyle Rezin
+ * Date: March, 2017.
+**/
 public class ThiefAbility implements IAbility {
-
-    public ThiefAbility(){}
 
     public void performAbility(DungeonCharacter opponent, DungeonCharacter hero)
 	{
@@ -23,7 +26,7 @@ public class ThiefAbility implements IAbility {
 	}//end surpriseAttack method
 
     public void attack(DungeonCharacter opponent, DungeonCharacter hero) {
-        
+
     }
 
     public int prompt() {

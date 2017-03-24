@@ -1,6 +1,8 @@
 /**
- * Created by bimpecoven on 3/16/17.
- */
+ * CSCD349 - Final Project
+ * Project by: Blake Impecoven and Kyle Rezin
+ * Date: March, 2017.
+**/
 public class DwarfAbility implements IAbility{
 
     public void performAbility(DungeonCharacter opponent, DungeonCharacter hero)

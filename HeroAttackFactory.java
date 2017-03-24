@@ -2,8 +2,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by bimpecoven on 3/22/17.
- */
+ * CSCD349 - Final Project
+ * Project by: Blake Impecoven and Kyle Rezin
+ * Date: March, 2017.
+**/
 public class HeroAttackFactory {
     private Map<String, IAbility> abilities = new HashMap<String, IAbility>();
 

@@ -1,4 +1,8 @@
-
+/**
+ * CSCD349 - Final Project
+ * Project by: Blake Impecoven and Kyle Rezin
+ * Date: March, 2017.
+**/
 
 /**
  * Title:

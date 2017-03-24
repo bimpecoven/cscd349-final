@@ -1,6 +1,9 @@
+/**
+ * CSCD349 - Final Project
+ * Project by: Blake Impecoven and Kyle Rezin
+ * Date: March, 2017.
+**/
 public class WarriorAbility implements IAbility {
-
-    public WarriorAbility(){}
 
     public void performAbility(DungeonCharacter opponent, DungeonCharacter hero)
 	{

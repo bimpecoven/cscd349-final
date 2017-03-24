@@ -1,6 +1,7 @@
-/*
- * DungeonCharacterFactory class
- *
+/**
+ * CSCD349 - Final Project
+ * Project by: Blake Impecoven and Kyle Rezin
+ * Date: March, 2017.
 **/
 
 public class HeroFactory {
@@ -68,7 +69,7 @@ public class HeroFactory {
         }//end switch
 
         hero = new Hero(name, hitPoints, attackSpeed, chanceToHit, damageMin, damageMax, chanceToBlock);
-        hero.setAbility(setAbility(hero.name));
+        hero.setAbility(setAbility(hero.getName()));
 
         return hero;
     }//end createCharacter
